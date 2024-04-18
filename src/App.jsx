@@ -1,5 +1,4 @@
-import { useState } from "react";
-import clsx from "clsx";
+import { useState, useEffect } from "react";
 
 import Description from "./components/Description/Description";
 import Options from "./components/Options/Options";
@@ -9,13 +8,16 @@ import Notification from "./components/Notification/Notification";
 import css from "./App.module.css";
 
 export default function App() {
-  /*   const [isShow, setIsShowFeedBack] = useState(false); */
-
-  const [values, setValues] = useState({
-    good: 0,
-    neutral: 0,
-    bad: 0,
+  const [values, setValues] = useState(() => {
+    const savedValues = localStorage.getItem("feedbackValues");
+    return savedValues
+      ? JSON.parse(savedValues)
+      : { good: 0, neutral: 0, bad: 0 };
   });
+
+  useEffect(() => {
+    localStorage.setItem("feedbackValues", JSON.stringify(values));
+  }, [values]);
 
   const updateGood = () => {
     setValues({
@@ -63,9 +65,12 @@ export default function App() {
         break;
     }
   }
+
   const totalFeedback = values.good + values.neutral + values.bad;
   const positiveFeedback =
-    totalFeedback > 0 ? Math.round((values.good / totalFeedback) * 100) : 0;
+    totalFeedback > 0
+      ? Math.round((values.good / (totalFeedback - values.neutral)) * 100)
+      : 0;
 
   return (
     <div className={css.container}>
