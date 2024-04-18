@@ -3,6 +3,7 @@ import css from "../Feedback/Feedback.module.css";
 export default function Feedback({
   onValues: { good, neutral, bad },
   totalFeedback,
+  positiveFeedback,
 }) {
   return (
     <div className={css.contentFeedback}>
@@ -10,7 +11,7 @@ export default function Feedback({
       <p>Neutral:{neutral}</p>
       <p>Bad:{bad}</p>
       <p>Total:{totalFeedback}</p>
-      <p>Positive:</p>
+      <p>Positive:{positiveFeedback}%</p>
     </div>
   );
 }

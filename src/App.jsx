@@ -1,4 +1,6 @@
 import { useState } from "react";
+import clsx from "clsx";
+
 import Description from "./components/Description/Description";
 import Options from "./components/Options/Options";
 import Feedback from "./components/Feedback/Feedback";
@@ -35,6 +37,18 @@ export default function App() {
   };
 
   function updateFeedback(feedbackType) {
+    if (feedbackType === "reset") {
+      setValues({
+        good: 0,
+        neutral: 0,
+        bad: 0,
+      });
+    } else {
+      setValues({
+        ...values,
+        [feedbackType]: values[feedbackType] + 1,
+      });
+    }
     switch (feedbackType) {
       case "good":
         updateGood();
@@ -50,14 +64,20 @@ export default function App() {
     }
   }
   const totalFeedback = values.good + values.neutral + values.bad;
+  const positiveFeedback =
+    totalFeedback > 0 ? Math.round((values.good / totalFeedback) * 100) : 0;
 
   return (
     <div className={css.container}>
       <Description />
-      <Options onUpdate={updateFeedback} />
+      <Options onUpdate={updateFeedback} totalFeedback={totalFeedback} />
 
       {totalFeedback > 0 ? (
-        <Feedback onValues={values} totalFeedback={totalFeedback} />
+        <Feedback
+          onValues={values}
+          totalFeedback={totalFeedback}
+          positiveFeedback={positiveFeedback}
+        />
       ) : (
         <Notification />
       )}
