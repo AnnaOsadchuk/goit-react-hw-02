@@ -2,6 +2,7 @@ import { useState } from "react";
 import Description from "./components/Description/Description";
 import Options from "./components/Options/Options";
 import Feedback from "./components/Feedback/Feedback";
+import Notification from "./components/Notification/Notification";
 
 import css from "./App.module.css";
 
@@ -34,7 +35,6 @@ export default function App() {
   };
 
   function updateFeedback(feedbackType) {
-    console.log(feedbackType);
     switch (feedbackType) {
       case "good":
         updateGood();
@@ -56,10 +56,10 @@ export default function App() {
       <Description />
       <Options onUpdate={updateFeedback} />
 
-      {totalFeedback >= 0 ? (
+      {totalFeedback > 0 ? (
         <Feedback onValues={values} totalFeedback={totalFeedback} />
       ) : (
-        <Notification message="No feedback given" />
+        <Notification />
       )}
     </div>
   );
