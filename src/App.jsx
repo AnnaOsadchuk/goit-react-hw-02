@@ -19,50 +19,14 @@ export default function App() {
     localStorage.setItem("feedbackValues", JSON.stringify(values));
   }, [values]);
 
-  const updateGood = () => {
-    setValues({
-      ...values,
-      good: values.good + 1,
-    });
-  };
-  const updateNeutral = () => {
-    setValues({
-      ...values,
-      neutral: values.neutral + 1,
-    });
-  };
-  const updateBad = () => {
-    setValues({
-      ...values,
-      bad: values.bad + 1,
-    });
-  };
-
   function updateFeedback(feedbackType) {
     if (feedbackType === "reset") {
-      setValues({
-        good: 0,
-        neutral: 0,
-        bad: 0,
-      });
+      setValues({ good: 0, neutral: 0, bad: 0 });
     } else {
-      setValues({
-        ...values,
-        [feedbackType]: values[feedbackType] + 1,
-      });
-    }
-    switch (feedbackType) {
-      case "good":
-        updateGood();
-        break;
-      case "neutral":
-        updateNeutral();
-        break;
-      case "bad":
-        updateBad();
-        break;
-      default:
-        break;
+      setValues((prevValues) => ({
+        ...prevValues,
+        [feedbackType]: prevValues[feedbackType] + 1,
+      }));
     }
   }
 
